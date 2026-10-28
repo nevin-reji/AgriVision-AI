@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-wrap">
+    <h2>Crop Recommendation</h2>
+    {% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+    {% if not model_ready %}<div class="alert warning">The crop model has not been trained yet. Run the training script to generate it.</div>{% endif %}
+
+    <form method="post" class="form-panel" id="crop-form">
+        <div class="field-grid">
+            <label>Nitrogen<input type="number" name="N" value="{{ fields.N if fields else '' }}" step="any" required></label>
+            <label>Phosphorus<input type="number" name="P" value="{{ fields.P if fields else '' }}" step="any" required></label>
+            <label>Potassium<input type="number" name="K" value="{{ fields.K if fields else '' }}" step="any" required></label>
+            <label>Temperature<input type="number" name="temperature" value="{{ fields.temperature if fields else '' }}" step="any" required></label>
+            <label>Humidity<input type="number" name="humidity" value="{{ fields.humidity if fields else '' }}" step="any" required></label>
+            <label>Soil pH<input type="number" name="ph" value="{{ fields.ph if fields else '' }}" step="any" required></label>
+            <label>Rainfall<input type="number" name="rainfall" value="{{ fields.rainfall if fields else '' }}" step="any" required></label>
+        </div>
+        <button class="btn primary" type="submit">Recommend crop</button>
+    </form>
+
+    {% if prediction %}
+    <div class="result-card">
+        <h3>Recommended crop</h3>
+        <div class="prediction-title">{{ prediction }}</div>
+        {% if confidence is not none %}<p>Confidence: {{ '%.2f'|format(confidence * 100) }}%</p>{% endif %}
+        {% if metrics %}<p>Model accuracy: {{ metrics.accuracy }}</p>{% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

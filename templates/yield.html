@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-wrap">
+    <h2>Crop Yield Prediction</h2>
+    {% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+    {% if not model_ready %}<div class="alert warning">The yield model has not been trained yet. Run the training script to generate it.</div>{% endif %}
+
+    <form method="post" class="form-panel" id="yield-form">
+        <div class="field-grid">
+            <label>Crop
+                <input type="text" name="crop" value="{{ fields.crop if fields else '' }}" required>
+            </label>
+            <label>State
+                <input type="text" name="state" value="{{ fields.state if fields else '' }}" required>
+            </label>
+            <label>District
+                <input type="text" name="district" value="{{ fields.district if fields else '' }}" required>
+            </label>
+            <label>Year
+                <input type="number" name="year" value="{{ fields.year if fields else '' }}" required>
+            </label>
+            <label>Season
+                <input type="text" name="season" value="{{ fields.season if fields else '' }}" required>
+            </label>
+            <label>Area (ha)
+                <input type="number" name="area_ha" value="{{ fields.area_ha if fields else '' }}" step="any" required>
+            </label>
+            <label>Rainfall (mm)
+                <input type="number" name="rainfall_mm" value="{{ fields.rainfall_mm if fields else '' }}" step="any" required>
+            </label>
+            <label>Temperature (°C)
+                <input type="number" name="temperature_c" value="{{ fields.temperature_c if fields else '' }}" step="any" required>
+            </label>
+            <label>Soil pH
+                <input type="number" name="soil_ph" value="{{ fields.soil_ph if fields else '' }}" step="any" required>
+            </label>
+            <label>Soil moisture (%)
+                <input type="number" name="soil_moisture_pct" value="{{ fields.soil_moisture_pct if fields else '' }}" step="any" required>
+            </label>
+        </div>
+        <button class="btn primary" type="submit">Predict yield</button>
+    </form>
+
+    {% if prediction %}
+    <div class="result-card">
+        <h3>Estimated yield</h3>
+        <div class="prediction-title">{{ '%.2f'|format(prediction) }} t/ha</div>
+        {% if metrics %}
+            <p>RMSE: {{ '%.2f'|format(metrics.rmse) }}</p>
+            <p>R²: {{ '%.3f'|format(metrics.r2) }}</p>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

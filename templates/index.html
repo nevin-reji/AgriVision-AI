@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero">
+    <div class="hero-text">
+        <span class="eyebrow">Smart agriculture</span>
+        <h1>AgriVision AI</h1>
+        <p>Build practical crop recommendations using soil nutrients, climate, and a trained machine learning model.</p>
+        <a class="btn primary" href="{{ url_for('crop_page') }}">Try crop recommendation</a>
+    </div>
+    <div class="hero-panel">
+        <div class="stat-card"><strong>3</strong><span>Core modules</span></div>
+        <div class="stat-card"><strong>3</strong><span>Crop model ready</span></div>
+    </div>
+</section>
+
+<section class="grid three-up">
+    <article class="module-card">
+        <h3>Crop Recommendation</h3>
+        <p>Recommend appropriate cultivation choices using soil and weather inputs.</p>
+        <a href="{{ url_for('crop_page') }}">Open module</a>
+    </article>
+    <article class="module-card">
+        <h3>Yield Prediction</h3>
+        <p>Estimate production based on historical agricultural records.</p>
+        <a href="{{ url_for('yield_page') }}">Open module</a>
+    </article>
+    <article class="module-card">
+        <h3>Disease Detection</h3>
+        <p>Detect plant health using image-based deep learning models.</p>
+        <a href="{{ url_for('disease_page') }}">Open module</a>
+    </article>
+</section>
+{% endblock %}

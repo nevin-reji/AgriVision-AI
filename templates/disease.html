@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-wrap">
+    <h2>Disease Detection</h2>
+    {% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+    {% if not model_ready %}<div class="alert warning">The disease model has not been trained yet. Run the training script to generate it.</div>{% endif %}
+
+    <form method="post" enctype="multipart/form-data" class="form-panel" id="disease-form">
+        <div class="field-grid single-column">
+            <label>Leaf image
+                <input type="file" name="image" accept="image/png, image/jpeg" required>
+            </label>
+        </div>
+        <button class="btn primary" type="submit">Predict disease</button>
+    </form>
+
+    {% if result %}
+    <div class="result-card disease-result">
+        <h3>Prediction</h3>
+        <div class="prediction-title">{{ result.label.replace('_', ' ') }}</div>
+        <p>Crop: {{ result.crop }}</p>
+        <p>Confidence: {{ '%.2f'|format(result.confidence * 100) }}%</p>
+        <p>{{ result.description }}</p>
+        <p><strong>Guidance:</strong> {{ result.guidance }}</p>
+        {% if result.heatmap %}
+            <img src="data:image/png;base64,{{ result.heatmap }}" alt="Grad-CAM heatmap" class="heatmap-preview">
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
